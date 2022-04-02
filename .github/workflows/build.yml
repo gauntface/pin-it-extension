@@ -1,0 +1,22 @@
+name: Build and Test
+
+on: push
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Get the code
+      - uses: actions/checkout@v2
+
+      # Install dependencies
+      - name: Install NPM Deps
+        run: npm install
+
+      # Build it
+      - name: Build
+        run: npm run build
+
+      # Build publish zip
+      - name: Build Publish Zip
+        run: npm run build-publish

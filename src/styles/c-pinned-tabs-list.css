@@ -1,0 +1,26 @@
+.c-pinned-tabs-list {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+  outline: none;
+}
+
+.c-pinned-tabs-list li {
+  font-size: 1.4em;
+}
+
+.c-pinned-tabs-list[contenteditable="true"] {
+  border: solid;
+  border-color: #00a8ff;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.c-pinned-tabs-list[contenteditable="true"]:after {
+  content: "...pst, hit a new line to add a URL";
+  display: block;
+  text-align: right;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: rgb(255, 255, 255);
+}

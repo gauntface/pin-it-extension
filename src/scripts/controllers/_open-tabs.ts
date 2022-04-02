@@ -1,0 +1,39 @@
+import * as browser from "webextension-polyfill";
+import { logger } from "../utils/_logger";
+import { getUrlsToPin } from "../models/_pinned-tabs";
+
+export async function openPinnedTabs(windowID: number): Promise<void> {
+  logger.log(`Opening tabs in window ${windowID}`);
+
+  const urlsToPin = await getUrlsToPin();
+
+  for (const u of urlsToPin) {
+    logger.debug(`Creating tab for ${u}`);
+    await browser.tabs.create({
+      // Don't force focus on it.
+      active: false,
+      // Ensure it's pinned
+      pinned: true,
+      // Provide URL of the tab
+      url: u,
+    });
+  }
+}
+
+export async function closePinnedTabs(windowID: number) {
+  const tabs = await browser.tabs.query({
+    pinned: true,
+    windowId: windowID,
+  });
+  const tabsToClose = [];
+  for (let i = 0; i < tabs.length; i++) {
+    const t = tabs[i];
+    if (t.audible) {
+      logger.debug(`Keeping tab ${i} because it's playing sound`);
+      continue;
+    }
+    logger.debug(`Removing tab ${i}`);
+    tabsToClose.push(t.id);
+  }
+  await browser.tabs.remove(tabsToClose);
+}

@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css?family=Arvo|Open+Sans");
+
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+
+  font-size: 16px;
+  font-family: "Open Sans", sans-serif;
+}
