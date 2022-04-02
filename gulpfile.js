@@ -122,15 +122,10 @@ gulp.task("copy", function () {
   return gulp.src(`${src}/**/*.{${extensions.join(",")}}`).pipe(gulp.dest(dst));
 });
 
-gulp.task("prettier", () => {
-  return execP("npx prettier --write .");
-});
-
 gulp.task(
   "build-clean",
   gulp.series(
     "clean",
-    "prettier",
     gulp.parallel(
       tsBrowser.gulpBuild("gauntface.pinit.extension", {
         rollupPlugins: [
