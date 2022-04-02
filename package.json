@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "build": "gulp build",
-    "build-publish": "gulp publish",
-    "lint": "eslint src/**/*.ts"
+    "build": "npm run lint && gulp build",
+    "build-publish": "npm run lint && gulp publish",
+    "lint": "eslint src/**/*.ts --fix"
   },
   "devDependencies": {
     "@hopin/wbt-ts-browser": "0.0.126",
