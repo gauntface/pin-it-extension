@@ -6,7 +6,7 @@
   },
   "devDependencies": {
     "@hopin/wbt-ts-browser": "0.0.126",
-    "@rollup/plugin-commonjs": "21.1.0",
+    "@rollup/plugin-commonjs": "22.0.0",
     "@rollup/plugin-node-resolve": "13.2.1",
     "@types/webextension-polyfill": "0.8.3",
     "@typescript-eslint/eslint-plugin": "5.20.0",
