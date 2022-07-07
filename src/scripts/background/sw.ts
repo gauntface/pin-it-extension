@@ -1,10 +1,10 @@
-import * as browser from "webextension-polyfill";
-import { logger } from "../utils/_logger";
-import { openPinnedTabs, closePinnedTabs } from "../controllers/_open-tabs";
-import { getUrlsToPin } from "../models/_pinned-tabs";
+import * as browser from 'webextension-polyfill';
+import {logger} from '../utils/_logger';
+import {openPinnedTabs, closePinnedTabs} from '../controllers/_open-tabs';
+import {getUrlsToPin} from '../models/_pinned-tabs';
 
 browser.action.onClicked.addListener(async (tab) => {
-  logger.log("Extension icon was clicked, loading pinned tabs...");
+  logger.log('Extension icon was clicked, loading pinned tabs...');
   try {
     const pins = await getUrlsToPin();
     if (pins.length === 0) {
@@ -14,8 +14,10 @@ browser.action.onClicked.addListener(async (tab) => {
     }
 
     const window = await browser.windows.getCurrent();
-    await closePinnedTabs(window.id);
-    await openPinnedTabs(window.id);
+    if (window.id) {
+      await closePinnedTabs(window.id);
+      await openPinnedTabs(window.id);
+    }
   } catch (err) {
     logger.error(`Failed to load pinned tabs: `, err);
   }

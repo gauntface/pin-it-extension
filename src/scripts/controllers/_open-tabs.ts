@@ -1,7 +1,10 @@
-import * as browser from "webextension-polyfill";
-import { logger } from "../utils/_logger";
-import { getUrlsToPin } from "../models/_pinned-tabs";
+import * as browser from 'webextension-polyfill';
+import {logger} from '../utils/_logger';
+import {getUrlsToPin} from '../models/_pinned-tabs';
 
+/**
+ * @param {number} windowID
+ */
 export async function openPinnedTabs(windowID: number): Promise<void> {
   logger.log(`Opening tabs in window ${windowID}`);
 
@@ -20,16 +23,23 @@ export async function openPinnedTabs(windowID: number): Promise<void> {
   }
 }
 
+/**
+ * @param {number} windowID
+ */
 export async function closePinnedTabs(windowID: number) {
   const tabs = await browser.tabs.query({
     pinned: true,
     windowId: windowID,
   });
-  const tabsToClose = [];
+  const tabsToClose: Array<number> = [];
   for (let i = 0; i < tabs.length; i++) {
     const t = tabs[i];
     if (t.audible) {
       logger.debug(`Keeping tab ${i} because it's playing sound`);
+      continue;
+    }
+    if (!t.id) {
+      logger.debug(`Skipping tab ${i} because it has no ID`);
       continue;
     }
     logger.debug(`Removing tab ${i}`);

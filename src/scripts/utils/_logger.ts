@@ -1,5 +1,5 @@
-import { BrowserLogger } from "@hopin/logger/build-browser/browser/_BrowserLogger";
+import {Logger} from '@gauntface/logger';
 
-export const logger = new BrowserLogger({
-  prefix: "Pin-It",
+export const logger = new Logger({
+  prefix: 'Pin-It',
 });

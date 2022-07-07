@@ -9,6 +9,7 @@ const EDIT_URLS_BTN_SELECTOR = '.js-edit-urls-btn';
 const EDIT_URLS_LIST_SELECTOR = '.js-edit-urls-list';
 const EDIT_URLS_PAGE_SELECTOR = '.js-edit-urls-page';
 const SAVE_URLS_BTN_SELECTOR = '.js-save-urls-btn';
+const ERROR_MSG_SELECTOR = '.js-error-msg';
 
 const PAGE_HIDDEN_CLASS = 'l-page--is-hidden';
 const DEFAULT_TEXT = 'https://......';
@@ -30,7 +31,7 @@ function hideAllPages() {
 function switchPage(selector: string) {
   hideAllPages();
   const page = document.querySelector(selector);
-  page.classList.remove(PAGE_HIDDEN_CLASS);
+  page?.classList.remove(PAGE_HIDDEN_CLASS);
 }
 
 /**
@@ -38,7 +39,11 @@ function switchPage(selector: string) {
  * @param {string} msg The message to display to the user
  */
 function showError(msg: string) {
-  const errorMsg = document.querySelector('.js-error-msg');
+  const errorMsg = document.querySelector(ERROR_MSG_SELECTOR);
+  if (!errorMsg) {
+    logger.warn(`Failed find element with selector ` +
+    `'${ERROR_MSG_SELECTOR}'`);
+  }
   errorMsg.textContent = msg;
   switchPage(ERROR_PAGE_SELECTOR);
 }
@@ -56,6 +61,12 @@ function showLoadingPage() {
 async function showPinnedTabsPage() {
   const urls = await getUrlsToPin();
   const pinnedTabsList = document.querySelector(PINNED_TABS_LIST_SELECTOR);
+  if (!pinnedTabsList) {
+    logger.warn(`Failed find element with selector ` +
+    `'${PINNED_TABS_LIST_SELECTOR}'`);
+    return;
+  }
+
   while (pinnedTabsList.firstChild) {
     pinnedTabsList.removeChild(pinnedTabsList.firstChild);
   }
@@ -75,6 +86,12 @@ async function showPinnedTabsPage() {
 async function showEditURLsPage() {
   let urls = await getUrlsToPin();
   const urlsList = document.querySelector(EDIT_URLS_LIST_SELECTOR);
+  if (!urlsList) {
+    logger.warn(`Failed find element with selector ` +
+    `'${EDIT_URLS_LIST_SELECTOR}'`);
+    return;
+  }
+
   while (urlsList.firstChild) {
     urlsList.removeChild(urlsList.firstChild);
   }
@@ -98,13 +115,18 @@ async function showEditURLsPage() {
  */
 async function saveURLs() {
   const urlsList = document.querySelector(EDIT_URLS_LIST_SELECTOR);
+  if (!urlsList) {
+    logger.warn(`Failed find element with selector ` +
+    `'${EDIT_URLS_LIST_SELECTOR}'`);
+    return;
+  }
 
-  const newUrls = [];
+  const newUrls: Array<string> = [];
   const listItems = urlsList.querySelectorAll('li');
   for (const item of listItems) {
     const urlText = item.textContent;
     try {
-      if (urlText.length === 0 || urlText === DEFAULT_TEXT) {
+      if (!urlText || urlText.length === 0 || urlText === DEFAULT_TEXT) {
         continue;
       }
 
@@ -124,13 +146,13 @@ async function saveURLs() {
  */
 function setupButtons() {
   const editBtn = document.querySelector(EDIT_URLS_BTN_SELECTOR);
-  editBtn.addEventListener('click', async () => {
+  editBtn?.addEventListener('click', async () => {
     showLoadingPage();
     await showEditURLsPage();
   });
 
   const saveBtn = document.querySelector(SAVE_URLS_BTN_SELECTOR);
-  saveBtn.addEventListener('click', async () => {
+  saveBtn?.addEventListener('click', async () => {
     showLoadingPage();
     await saveURLs();
     await showPinnedTabsPage();
