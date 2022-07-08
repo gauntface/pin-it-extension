@@ -13,10 +13,8 @@ jobs:
       - name: Install NPM Deps
         run: npm install
 
-      # Build it
+      - name: Test
+        run: npm run test
+
       - name: Build
         run: npm run build
-
-      # Build publish zip
-      - name: Build Publish Zip
-        run: npm run build-publish
