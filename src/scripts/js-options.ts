@@ -1,3 +1,4 @@
+import './utils/_sentry';
 import {logger} from './utils/_logger';
 import {getUrlsToPin, setUrlsToPin} from './models/_pinned-tabs';
 
