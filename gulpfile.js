@@ -142,7 +142,6 @@ gulp.task('sentry-upload', async () => {
   const manifestPath = path.join(dst, 'manifest.json');
   const manifestContents = await fs.readJSON(manifestPath);
   const releaseName = `pin-it-extension@${manifestContents.version}`;
-  console.log(`Release => ${releaseName}`);
   execSync(`./node_modules/.bin/sentry-cli releases new ${releaseName}`);
   execSync(`./node_modules/.bin/sentry-cli releases files ${releaseName} ` +
   `upload-sourcemaps ${dst}`);
