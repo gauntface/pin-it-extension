@@ -1,3 +1,4 @@
 build/
 node_modules/
 gauntface-pin-it-extension.zip
+.sentryclirc

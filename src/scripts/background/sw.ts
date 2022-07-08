@@ -1,4 +1,5 @@
 import * as browser from 'webextension-polyfill';
+import '../utils/_sentry';
 import {logger} from '../utils/_logger';
 import {openPinnedTabs, closePinnedTabs} from '../controllers/_open-tabs';
 import {getUrlsToPin} from '../models/_pinned-tabs';

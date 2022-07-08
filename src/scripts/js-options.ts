@@ -1,3 +1,4 @@
+import './utils/_sentry';
 import {logger} from './utils/_logger';
 import {getUrlsToPin, setUrlsToPin} from './models/_pinned-tabs';
 
@@ -13,6 +14,8 @@ const ERROR_MSG_SELECTOR = '.js-error-msg';
 
 const PAGE_HIDDEN_CLASS = 'l-page--is-hidden';
 const DEFAULT_TEXT = 'https://......';
+
+throw new Error('Sentry Test');
 
 /**
  * Hide all "pages" in the given HTML page

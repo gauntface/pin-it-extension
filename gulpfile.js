@@ -4,6 +4,7 @@ import gulp from 'gulp';
 import semver from 'semver';
 import archiver from 'archiver';
 import esbuild from 'esbuild';
+import {execSync} from 'node:child_process';
 
 const devExtensionkey = 'developmentkalohmonpfgdhimepifhl';
 
@@ -117,6 +118,7 @@ gulp.task('build-clean', gulp.series(
           ],
           outdir: path.join(dst, 'scripts'),
           bundle: true,
+          sourcemap: true,
         }),
         'copy',
     ),
@@ -132,7 +134,18 @@ gulp.task('publish', (done) => {
     'build-clean',
     'prod-manifest',
     'zip',
+    'sentry-upload',
   ])(done);
+});
+
+gulp.task('sentry-upload', async () => {
+  const manifestPath = path.join(dst, 'manifest.json');
+  const manifestContents = await fs.readJSON(manifestPath);
+  const releaseName = `pin-it-extension@${manifestContents.version}`;
+  console.log(`Release => ${releaseName}`);
+  execSync(`./node_modules/.bin/sentry-cli releases new ${releaseName}`);
+  execSync(`./node_modules/.bin/sentry-cli releases files ${releaseName} ` +
+  `upload-sourcemaps ${dst}`);
 });
 
 gulp.task('watch', () => {
