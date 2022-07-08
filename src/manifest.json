@@ -1,6 +1,6 @@
 {
   "name": "Pin-It",
-  "version": "2.0.8",
+  "version": "2.0.10",
   "description": "This extension keeps a set of tabs permanently pinned in your browser window.",
   "manifest_version": 3,
   "icons": {
