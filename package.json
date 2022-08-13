@@ -6,7 +6,7 @@
     "test": "npm run lint"
   },
   "devDependencies": {
-    "@gauntface/logger": "3.0.19",
+    "@gauntface/logger": "3.0.20",
     "@sentry/browser": "7.10.0",
     "@sentry/cli": "2.5.0",
     "@sentry/tracing": "7.10.0",
@@ -14,13 +14,13 @@
     "@typescript-eslint/eslint-plugin": "5.33.0",
     "@typescript-eslint/parser": "5.33.0",
     "archiver": "5.3.1",
-    "esbuild": "0.15.1",
+    "esbuild": "0.15.2",
     "eslint": "8.21.0",
     "eslint-config-google": "0.14.0",
     "fs-extra": "10.1.0",
     "gulp": "4.0.2",
     "semver": "7.3.7",
-    "webextension-polyfill": "0.9.0"
+    "webextension-polyfill": "0.10.0"
   },
   "author": "gauntface",
   "license": "MIT",
