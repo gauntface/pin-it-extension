@@ -6,7 +6,7 @@
     "test": "npm run lint"
   },
   "devDependencies": {
-    "@gauntface/logger": "3.0.54",
+    "@gauntface/logger": "3.0.55",
     "@sentry/browser": "7.21.1",
     "@sentry/cli": "2.9.0",
     "@sentry/tracing": "7.21.1",
