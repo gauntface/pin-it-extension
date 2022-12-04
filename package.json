@@ -6,7 +6,7 @@
     "test": "npm run lint"
   },
   "devDependencies": {
-    "@gauntface/logger": "3.0.58",
+    "@gauntface/logger": "3.0.59",
     "@sentry/browser": "7.23.0",
     "@sentry/cli": "2.10.0",
     "@sentry/tracing": "7.23.0",
@@ -14,7 +14,7 @@
     "@typescript-eslint/eslint-plugin": "5.45.0",
     "@typescript-eslint/parser": "5.45.0",
     "archiver": "5.3.1",
-    "esbuild": "0.15.16",
+    "esbuild": "0.15.17",
     "eslint": "8.29.0",
     "eslint-config-google": "0.14.0",
     "fs-extra": "11.1.0",
