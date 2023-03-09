@@ -7,9 +7,9 @@
   },
   "devDependencies": {
     "@gauntface/logger": "3.0.97",
-    "@sentry/browser": "7.41.0",
+    "@sentry/browser": "7.42.0",
     "@sentry/cli": "2.14.4",
-    "@sentry/tracing": "7.41.0",
+    "@sentry/tracing": "7.42.0",
     "@types/webextension-polyfill": "0.10.0",
     "@typescript-eslint/eslint-plugin": "5.54.1",
     "@typescript-eslint/parser": "5.54.1",
