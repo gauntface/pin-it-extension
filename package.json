@@ -6,10 +6,10 @@
     "test": "npm run lint"
   },
   "devDependencies": {
-    "@gauntface/logger": "3.0.101",
-    "@sentry/browser": "7.44.1",
+    "@gauntface/logger": "3.0.102",
+    "@sentry/browser": "7.44.2",
     "@sentry/cli": "2.15.2",
-    "@sentry/tracing": "7.44.1",
+    "@sentry/tracing": "7.44.2",
     "@types/webextension-polyfill": "0.10.0",
     "@typescript-eslint/eslint-plugin": "5.56.0",
     "@typescript-eslint/parser": "5.56.0",
