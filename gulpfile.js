@@ -153,10 +153,15 @@ gulp.task('publish', (done) => {
 gulp.task('sentry-upload', async () => {
   const manifestPath = path.join(dst, 'manifest.json');
   const manifestContents = await fs.readJSON(manifestPath);
+
   const releaseName = `pin-it-extension@${manifestContents.version}`;
-  execSync(`./node_modules/.bin/sentry-cli releases new ${releaseName}`);
-  execSync(`./node_modules/.bin/sentry-cli releases files ${releaseName} ` +
-  `upload-sourcemaps ${dst}`);
+  const releaseOut = execSync(`./node_modules/.bin/sentry-cli releases ` +
+    `new ${releaseName}`);
+  console.log(releaseOut.toString());
+
+  const sourcemapOut = execSync(`./node_modules/.bin/sentry-cli sourcemaps ` +
+    `upload --release=${releaseName} ${dst}`);
+  console.log(sourcemapOut.toString());
 });
 
 gulp.task('watch', () => {
