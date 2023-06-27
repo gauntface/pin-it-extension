@@ -9,7 +9,6 @@
     "@gauntface/logger": "3.0.115",
     "@sentry/browser": "7.56.0",
     "@sentry/cli": "2.19.2",
-    "@sentry/tracing": "7.56.0",
     "@types/webextension-polyfill": "0.10.0",
     "@typescript-eslint/eslint-plugin": "5.60.1",
     "@typescript-eslint/parser": "5.60.1",

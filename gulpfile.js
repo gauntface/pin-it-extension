@@ -7,6 +7,7 @@ import esbuild from 'esbuild';
 import {execSync} from 'node:child_process';
 
 const devExtensionkey = 'developmentkalohmonpfgdhimepifhl';
+const prodSentryDSN = 'https://0b9cdcee8d8040edb9cc9586ecb52a14@o1296550.ingest.sentry.io/6556279';
 
 const src = path.join(path.resolve(), 'src');
 const dst = path.join(path.resolve(), 'build');
@@ -108,6 +109,12 @@ gulp.task('copy', () => {
   return gulp.src(`${src}/**/*.{${extensions.join(',')}}`).pipe(gulp.dest(dst));
 });
 
+gulp.task('sentry-artifacts', async () => {
+  execSync(
+      `./node_modules/.bin/sentry-cli sourcemaps inject ${dst}`,
+  );
+});
+
 gulp.task('build-clean', gulp.series(
     'clean',
     gulp.parallel(
@@ -119,9 +126,14 @@ gulp.task('build-clean', gulp.series(
           outdir: path.join(dst, 'scripts'),
           bundle: true,
           sourcemap: true,
+          define: {
+            'process.env.SENTRY_DSN': process.env.NODE_ENV === 'production' ?
+                `"${prodSentryDSN}"` : '""',
+          },
         }),
         'copy',
     ),
+    'sentry-artifacts',
 ));
 
 gulp.task('build', gulp.series('build-clean', 'dev-manifest'));
