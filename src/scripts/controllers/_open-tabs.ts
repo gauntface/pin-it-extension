@@ -19,6 +19,8 @@ export async function openPinnedTabs(windowID: number): Promise<void> {
       pinned: true,
       // Provide URL of the tab
       url: u,
+      // The window to open the tabs in
+      windowId: windowID,
     });
   }
 }
