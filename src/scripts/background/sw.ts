@@ -13,9 +13,13 @@ browser.action.onClicked.addListener(async (tab) => {
     return;
   }
 
-  const window = await browser.windows.getCurrent();
-  if (window.id) {
-    await closePinnedTabs(window.id);
-    await openPinnedTabs(window.id);
+  try {
+    const window = await browser.windows.getCurrent();
+    if (window.id) {
+      await closePinnedTabs(window.id);
+      await openPinnedTabs(window.id);
+    }
+  } catch (e) {
+    logger.error('Failed to get current window and open tabs: ', e);
   }
 });
