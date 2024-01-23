@@ -8,10 +8,10 @@
   "devDependencies": {
     "@gauntface/logger": "3.0.115",
     "@sentry/browser": "7.94.1",
-    "@sentry/cli": "2.25.3",
+    "@sentry/cli": "2.26.0",
     "@types/webextension-polyfill": "0.10.7",
-    "@typescript-eslint/eslint-plugin": "6.19.0",
-    "@typescript-eslint/parser": "6.19.0",
+    "@typescript-eslint/eslint-plugin": "6.19.1",
+    "@typescript-eslint/parser": "6.19.1",
     "archiver": "6.0.1",
     "esbuild": "0.19.11",
     "eslint": "8.56.0",
