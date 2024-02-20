@@ -1,12 +1,12 @@
 <script lang="ts">
-  export let id: number;
-  export let url: string;
-  export let handleURLChange: (id: number, value: string) => void;
+  export let id: number
+  export let url: string
+  export let handleURLChange: (id: number, value: string) => void
 
-  let inputElement: HTMLInputElement;
+  let inputElement: HTMLInputElement
 
-  function _handleURLChange() {
-    handleURLChange(id, inputElement.value);
+  function _handleURLChange () {
+    handleURLChange(id, inputElement.value)
   }
 </script>
 

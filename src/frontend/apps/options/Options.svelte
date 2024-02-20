@@ -1,40 +1,38 @@
 <script lang="ts">
-  import Divider from '../../components/divider/Divider.svelte';
-  import Loader from '../../components/loader/Loader.svelte';
-  import URLItem from '../../components/url-item/URLItem.svelte';
-  import BuyMeACoffee from '../../components/bmc/BuyMeACoffee.svelte';
-  import { getUrlsToPin, setUrlsToPin } from '../../../libs/models/_pinned-tabs';
-  import { DebounceWork } from '../../../libs/models/_debounce-work';
+  import Divider from '../../components/divider/Divider.svelte'
+  import Loader from '../../components/loader/Loader.svelte'
+  import URLItem from '../../components/url-item/URLItem.svelte'
+  import BuyMeACoffee from '../../components/bmc/BuyMeACoffee.svelte'
+  import { getUrlsToPin, setUrlsToPin } from '../../../libs/models/_pinned-tabs'
+  import { DebounceWork } from '../../../libs/models/_debounce-work'
 
-  let loading = true;
-  let pendingChanges = false;
-  let urls: Array<string> = [];
+  let pendingChanges = false
+  let urls: Array<string> = []
   const debouncedSaveURLs = new DebounceWork(async () => {
-    await setUrlsToPin(urls);
-    pendingChanges = !debouncedSaveURLs.isComplete();
-  });
+    await setUrlsToPin(urls)
+    pendingChanges = !debouncedSaveURLs.isComplete()
+  })
 
   getUrlsToPin().then((result) => {
-    urls = result;
-    loading = false;
-  });
+    urls = result
+  })
 
-  function saveURLs() {
-    pendingChanges = true;
-    debouncedSaveURLs.run();
+  function saveURLs () {
+    pendingChanges = true
+    debouncedSaveURLs.run()
   }
 
-  function addURL() {
-    urls = [...urls, ''];
+  function addURL () {
+    urls = [...urls, '']
   }
 
-  function handleURLChange(index: number, value: string) {
+  function handleURLChange (index: number, value: string) {
     if (urls[index] === value) {
-      return;
+      return
     }
 
-    urls[index] = value;
-    saveURLs();
+    urls[index] = value
+    saveURLs()
   }
 </script>
 
