@@ -1,0 +1,5 @@
+.c-divider {
+  height: 1px;
+  background-color: var(--primary-dark);
+  margin-block: var(--p-8);
+}

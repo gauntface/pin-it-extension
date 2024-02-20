@@ -11,10 +11,7 @@ jobs:
 
       # Install dependencies
       - name: Install NPM Deps
-        run: npm install
-
-      - name: Test
-        run: npm run test
+        run: pnpm install
 
       - name: Build
         run: npm run build

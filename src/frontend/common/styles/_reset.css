@@ -1,0 +1,38 @@
+@import './vars/_fonts.css';
+@import './vars/_dimens.css';
+@import './vars/_colors.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  outline-color: var(--primary-light);
+}
+
+body {
+  font-family: var(--body-font);
+  color: var(--primary-dark);
+}
+
+p {
+  padding-bottom: var(--p-4);
+}
+
+button {
+  color: white;
+  background-color: var(--primary-dark);
+  border: none;
+  font-weight: bold;
+  padding: var(--p-3);
+  border-radius: var(--br-2);
+  cursor: pointer;
+  outline: none;
+}
+
+button:hover {
+  background-color: var(--primary-light);
+}
+
+button:active {
+  background-color: var(--primary-dark);
+}

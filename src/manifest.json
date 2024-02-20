@@ -20,6 +20,7 @@
     "storage"
   ],
   "background": {
-    "service_worker": "scripts/background/sw.js"
+    "service_worker": "scripts/background/sw.js",
+    "type": "module"
   }
 }
