@@ -13,5 +13,8 @@ jobs:
       - name: Install NPM Deps
         run: pnpm install
 
+      - name: Lint
+        run: pnpm run lint:check
+
       - name: Build
-        run: npm run build
+        run: pnpm run build
