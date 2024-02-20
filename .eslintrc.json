@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["standard", "plugin:svelte/recommended"],
+  "extends": ["standard", "plugin:svelte/recommended", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",

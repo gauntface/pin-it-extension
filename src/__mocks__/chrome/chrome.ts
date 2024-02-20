@@ -1,4 +1,4 @@
-import './runtime'
-import './storage'
+import "./runtime";
+import "./storage";
 
-globalThis.browser = globalThis.chrome || {}
+globalThis.browser = globalThis.chrome || {};
