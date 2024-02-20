@@ -10,7 +10,7 @@
     "lint": "npm run eslint -- --fix && npm run prettier -- --write",
     "lint:check": "npm run eslint && npm run prettier --check",
     "eslint": "eslint 'src/**/*.{js,ts,svelte}'",
-    "prettier": "prettier 'src/**/*.{js,ts}'",
+    "prettier": "prettier 'src/**/*.{js,ts,svelte}'",
     "preview": "vite preview",
     "publish": "npm run build && ./sentry-upload.js"
   },
@@ -36,6 +36,7 @@
     "eslint-plugin-svelte": "^2.35.1",
     "lodash": "^4.17.21",
     "prettier": "^3.2.5",
+    "prettier-plugin-svelte": "^3.2.1",
     "semver": "^7.6.0",
     "svelte": "^4.2.10",
     "svelte-check": "^3.6.3",

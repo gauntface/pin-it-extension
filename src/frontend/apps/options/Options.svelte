@@ -1,38 +1,41 @@
 <script lang="ts">
-  import Divider from '../../components/divider/Divider.svelte'
-  import Loader from '../../components/loader/Loader.svelte'
-  import URLItem from '../../components/url-item/URLItem.svelte'
-  import BuyMeACoffee from '../../components/bmc/BuyMeACoffee.svelte'
-  import { getUrlsToPin, setUrlsToPin } from '../../../libs/models/_pinned-tabs'
-  import { DebounceWork } from '../../../libs/models/_debounce-work'
+  import Divider from "../../components/divider/Divider.svelte";
+  import Loader from "../../components/loader/Loader.svelte";
+  import URLItem from "../../components/url-item/URLItem.svelte";
+  import BuyMeACoffee from "../../components/bmc/BuyMeACoffee.svelte";
+  import {
+    getUrlsToPin,
+    setUrlsToPin,
+  } from "../../../libs/models/_pinned-tabs";
+  import { DebounceWork } from "../../../libs/models/_debounce-work";
 
-  let pendingChanges = false
-  let urls: Array<string> = []
+  let pendingChanges = false;
+  let urls: Array<string> = [];
   const debouncedSaveURLs = new DebounceWork(async () => {
-    await setUrlsToPin(urls)
-    pendingChanges = !debouncedSaveURLs.isComplete()
-  })
+    await setUrlsToPin(urls);
+    pendingChanges = !debouncedSaveURLs.isComplete();
+  });
 
   getUrlsToPin().then((result) => {
-    urls = result
-  })
+    urls = result;
+  });
 
-  function saveURLs () {
-    pendingChanges = true
-    debouncedSaveURLs.run()
+  function saveURLs() {
+    pendingChanges = true;
+    debouncedSaveURLs.run();
   }
 
-  function addURL () {
-    urls = [...urls, '']
+  function addURL() {
+    urls = [...urls, ""];
   }
 
-  function handleURLChange (index: number, value: string) {
+  function handleURLChange(index: number, value: string) {
     if (urls[index] === value) {
-      return
+      return;
     }
 
-    urls[index] = value
-    saveURLs()
+    urls[index] = value;
+    saveURLs();
   }
 </script>
 
@@ -47,18 +50,16 @@
   <Divider />
 
   <p>
-    Edit the list of URLs below to setup which tabs you'd like to be
-    pinned in your browser.
+    Edit the list of URLs below to setup which tabs you'd like to be pinned in
+    your browser.
   </p>
-  <p>
-    Once set-up, just click the extension icon and the tabs will open.
-  </p>
+  <p>Once set-up, just click the extension icon and the tabs will open.</p>
 
   <section class="l-settings-section">
     <div class="l-settings-section__title">Pinned Tabs</div>
     <div class="l-settings-section__body-list">
       {#each urls as url, i (i)}
-        <URLItem id={i} url={url} handleURLChange={handleURLChange} />
+        <URLItem id={i} {url} {handleURLChange} />
       {/each}
       <button title="Add URL" on:click={addURL}>Add URL</button>
     </div>
