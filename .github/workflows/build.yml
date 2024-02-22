@@ -25,4 +25,6 @@ jobs:
         run: pnpm run test:ci
 
       - name: Build
+        env:
+          EXTENSION_VERSION: "v1.2.3"
         run: pnpm run build
