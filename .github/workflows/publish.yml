@@ -40,9 +40,10 @@ jobs:
         run: pnpm run build
 
       - name: GitHub Tag Name
+        env:
+          EXTENSION_VERSION: ${{ env.EXTENSION_VERSION }}
         run: |
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+          echo "EXTENSION_VERSION: $EXTENSION_VERSION"
 
       - name: Create GitHub release
         uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5 # v1.14.0
@@ -56,6 +57,8 @@ jobs:
           tag: "${{ env.EXTENSION_VERSION }}"
 
       - name: Upload sourcemaps to Sentry
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: ./sentry-upload.js
 
       - name: Upload extension to Chrome Web Store
