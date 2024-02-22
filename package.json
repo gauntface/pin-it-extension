@@ -14,7 +14,7 @@
     "eslint": "eslint 'src/**/*.{js,ts,svelte}'",
     "prettier": "prettier 'src/**/*.{js,ts,svelte}'",
     "preview": "vite preview",
-    "publish": "npm run build && ./sentry-upload.js"
+    "chrome-webstore-upload": "chrome-webstore-upload"
   },
   "devDependencies": {
     "@gauntface/logger": "^3.0.115",
@@ -26,6 +26,7 @@
     "@types/webextension-polyfill": "^0.10.7",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "archiver": "^6.0.1",
+    "chrome-webstore-upload-cli": "^3.1.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard-with-typescript": "^43.0.1",
