@@ -70,7 +70,7 @@ jobs:
         run: |
           pnpm run chrome-webstore-upload upload \
             --auto-publish \
-            --source ./dist \
+            --source gauntface-pin-it-extension.zip \
             --extension-id $EXTENSION_ID \
             --client-id $CLIENT_ID \
             --client-secret $CLIENT_SECRET \
