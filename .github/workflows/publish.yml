@@ -68,7 +68,7 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
         run: |
-          pnpm run chrome-webstore-upload -- upload \
+          pnpm run chrome-webstore-upload upload \
             --auto-publish \
             --source gauntface-pin-it-extension.zip \
             --extension-id $EXTENSION_ID \
