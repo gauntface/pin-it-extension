@@ -29,12 +29,18 @@
     urls = [...urls, ""];
   }
 
-  function handleURLChange(index: number, value: string) {
+  function onURLChange(index: number, value: string) {
     if (urls[index] === value) {
       return;
     }
 
     urls[index] = value;
+    saveURLs();
+  }
+
+  function onDeleteURL(index: number) {
+    urls.splice(index, 1)
+    urls = [...urls];
     saveURLs();
   }
 </script>
@@ -49,17 +55,20 @@
 
   <Divider />
 
-  <p>
-    Edit the list of URLs below to setup which tabs you'd like to be pinned in
-    your browser.
-  </p>
-  <p>Once set-up, just click the extension icon and the tabs will open.</p>
+  <div>
+    <p>
+      Edit the list of URLs below to setup which tabs you'd like to be pinned in
+      your browser. Please make sure they are valid URLs, starting with
+      <code>http://</code> or <code>https://</code>.
+    </p>
+    <p>Once set-up, just click the extension icon and the tabs will open.</p>
+  </div>
 
   <section class="l-settings-section">
     <div class="l-settings-section__title">Pinned Tabs</div>
     <div class="l-settings-section__body-list">
       {#each urls as url, i (i)}
-        <URLItem id={i} {url} {handleURLChange} />
+        <URLItem id={i} {url} {onURLChange} {onDeleteURL} />
       {/each}
       <button title="Add URL" on:click={addURL}>Add URL</button>
     </div>
@@ -69,5 +78,3 @@
     <BuyMeACoffee />
   </section>
 </main>
-
-<style src="./options.css"></style>

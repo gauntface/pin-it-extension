@@ -1,16 +1,19 @@
 <script lang="ts">
+    import { DebounceWork } from "../../../libs/models/_debounce-work";
+
   export let id: number;
   export let url: string;
-  export let handleURLChange: (id: number, value: string) => void;
+  export let onURLChange: (id: number, value: string) => void;
+  export let onDeleteURL: (id: number) => void;
 
   let inputElement: HTMLInputElement;
 
   function _handleURLChange() {
-    handleURLChange(id, inputElement.value);
+    onURLChange(id, inputElement.value);
   }
 </script>
 
-<div>
+<div class="c-url-item">
   <input
     type="url"
     placeholder="Enter a URL"
@@ -18,6 +21,7 @@
     bind:this={inputElement}
     on:input={_handleURLChange}
   />
+  <button on:click={() => onDeleteURL(id)}>Delete</button>
 </div>
 
 <style src="./c-url-item.css"></style>

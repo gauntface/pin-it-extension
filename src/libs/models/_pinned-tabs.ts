@@ -11,10 +11,17 @@ export async function getUrlsToPin(): Promise<string[]> {
   return [];
 }
 
-export async function setUrlsToPin(urls: string[]): Promise<Array<string>> {
-  urls = urls.map((u) => u.trim()).filter((u) => u.length > 0);
+export async function setUrlsToPin(urls: string[]): Promise<void> {
+  urls = urls
+    .map((u) => {
+      try {
+        return new URL(u).toString();
+      } catch (e) {
+        return "";
+      }
+    })
+    .filter((u) => u.trim().length > 0);
   await browser.storage.sync.set({
     [URLS_TO_PIN_STORAGE_KEY]: urls,
   });
-  return urls;
 }

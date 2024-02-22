@@ -10,8 +10,16 @@
 }
 
 body {
+  background-color: var(--body-bg);
   font-family: var(--body-font);
-  color: var(--primary-dark);
+  color: var(--body-fg);
+}
+
+code {
+  font-family: var(--mono-font);
+  background-color: var(--primary-grey);
+  padding: 1px var(--p-1);
+  border-radius: 2px;
 }
 
 p {

@@ -1,5 +1,20 @@
 :root {
+  --body-bg: #FFF;
+  --body-fg: #373150;
+  --highlight: #00A8FF;
   --primary-dark: #373150;
   --primary-light: #00A8FF;
   --primary-grey: rgba(0, 0, 0, 0.04);
+
+  --error-color: #EA2027;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg: #2c2740;
+    --body-fg: #FFF;
+    --primary-dark: #4b4662;
+    --primary-light: #00A8FF;
+    --primary-grey: rgba(255, 255, 255, 0.04);
+  }
 }

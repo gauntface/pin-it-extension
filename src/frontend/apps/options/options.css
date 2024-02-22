@@ -1,8 +1,18 @@
 @import '../../common/styles/_reset.css';
 
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+}
+
 .l-settings {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  width: 100%;
   max-width: 680px;
-  margin-inline: auto;
+  flex: 1;
   padding: var(--p-8);
   container-type: inline-size;
 }
