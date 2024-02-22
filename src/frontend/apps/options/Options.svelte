@@ -39,7 +39,7 @@
   }
 
   function onDeleteURL(index: number) {
-    urls.splice(index, 1)
+    urls.splice(index, 1);
     urls = [...urls];
     saveURLs();
   }

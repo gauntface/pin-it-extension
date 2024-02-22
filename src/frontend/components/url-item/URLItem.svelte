@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { DebounceWork } from "../../../libs/models/_debounce-work";
-
   export let id: number;
   export let url: string;
   export let onURLChange: (id: number, value: string) => void;

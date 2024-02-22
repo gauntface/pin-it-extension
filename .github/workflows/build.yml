@@ -21,8 +21,8 @@ jobs:
       - name: Install NPM Deps
         run: pnpm install
 
-      - name: Lint
-        run: pnpm run lint:check
+      - name: Test
+        run: pnpm run test:ci
 
       - name: Build
         run: pnpm run build
