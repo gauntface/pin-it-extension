@@ -29,6 +29,8 @@ jobs:
         run: pnpm run test:ci
 
       - name: Build
+        env:
+          EXTENSION_VERSION: ${{ github.ref_name }}
         run: pnpm run build
 
       - name: GitHub Tag Name
@@ -36,7 +38,20 @@ jobs:
           echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
           echo "Tag name from github.ref_name: ${{  github.ref_name }}"
 
-      - name: Upload Release Asset
+      - name: Upload zip to GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload $GITHUB_REF_NAME ./gauntface-pin-it-extension.zip
+
+      - name: Upload sourcemaps to Sentry
+        run: ./sentry-upload.js
+
+      - name: Upload extension to Chrome Web Store
+        run: |
+          pnpm run chrome-webstore-upload -- upload \
+            --auto-publish \
+            --source gauntface-pin-it-extension.zip \
+            --extension-id $EXTENSION_ID \
+            --client-id $CLIENT_ID \
+            --client-secret $CLIENT_SECRET \
+            --refresh-token $REFRESH_TOKEN
