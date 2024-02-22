@@ -1,0 +1,40 @@
+name: Publish Extension
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      # Get the code
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Enable corepack
+        run: corepack enable # Enables use of pnpm
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ">= 18.13.0"
+
+      # Install dependencies
+      - name: Install NPM Deps
+        run: pnpm install
+
+      - name: Test
+        run: pnpm run test:ci
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Create GitHub release
+        uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5 # v1.14.0
+        id: create_release
+        with:
+          generateReleaseNotes: true
+          artifacts: gauntface-pin-it-extension.zip
+          artifactContentType: application/zip
+          makeLatest: true
+          name: "v${{ env.EXTENSION_VERSION }}"
