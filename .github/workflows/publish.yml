@@ -6,15 +6,16 @@ on:
       version:
         description: "Version, i.e. 0.2.1"
         required: true
-  push:
-    tags:
-      - v*.*.*
 
 jobs:
   release:
     name: release
     runs-on: ubuntu-latest
     steps:
+      - name: Set Extension Version
+        shell: bash
+        run: echo EXTENSION_VERSION="${{ github.ref_name || inputs.version }}" >> $GITHUB_ENV
+
       # Get the code
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
@@ -35,7 +36,7 @@ jobs:
 
       - name: Build
         env:
-          EXTENSION_VERSION: ${{ github.ref_name || inputs.version }}
+          EXTENSION_VERSION: ${{ env.EXTENSION_VERSION }}
         run: pnpm run build
 
       - name: GitHub Tag Name
@@ -43,10 +44,16 @@ jobs:
           echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
           echo "Tag name from github.ref_name: ${{  github.ref_name }}"
 
-      - name: Upload zip to GitHub Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload $GITHUB_REF_NAME ./gauntface-pin-it-extension.zip
+      - name: Create GitHub release
+        uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5 # v1.14.0
+        id: create_release
+        with:
+          generateReleaseNotes: true
+          artifacts: gauntface-pin-it-extension.zip
+          artifactContentType: application/zip
+          makeLatest: true
+          name: "v${{ env.EXTENSION_VERSION }}"
+          tag: "${{ env.EXTENSION_VERSION }}"
 
       - name: Upload sourcemaps to Sentry
         run: ./sentry-upload.js
