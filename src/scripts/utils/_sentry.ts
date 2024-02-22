@@ -1,9 +1,0 @@
-import * as Sentry from '@sentry/browser';
-import * as browser from 'webextension-polyfill';
-
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  integrations: [],
-  release: `pin-it-extension@${browser.runtime.getManifest().version}`,
-  tracesSampleRate: 0.1,
-});

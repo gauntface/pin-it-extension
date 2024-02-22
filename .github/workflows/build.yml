@@ -9,12 +9,20 @@ jobs:
       # Get the code
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
+      - name: Enable corepack
+        run: corepack enable # Enables use of pnpm
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ">= 18.13.0"
+
       # Install dependencies
       - name: Install NPM Deps
-        run: npm install
+        run: pnpm install
 
       - name: Test
-        run: npm run test
+        run: pnpm run test:ci
 
       - name: Build
-        run: npm run build
+        run: pnpm run build

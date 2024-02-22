@@ -1,0 +1,23 @@
+.c-url-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+input {
+  width: 100%;
+  padding: var(--p-3) var(--p-4);
+  border-radius: var(--br-2) 0 0 var(--br-2);
+  border-style: solid;
+  border-width: 1px;
+}
+
+button {
+  height: 100%;
+  border-radius: 0 var(--br-2) var(--br-2) 0;
+}
+
+input:invalid {
+  outline-color: var(--error-color);
+  border-color: var(--error-color);
+  border-width: 3px;
+}

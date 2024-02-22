@@ -1,0 +1,62 @@
+@import '../../common/styles/_reset.css';
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+}
+
+.l-settings {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  width: 100%;
+  max-width: 680px;
+  flex: 1;
+  padding: var(--p-8);
+  container-type: inline-size;
+}
+
+.l-settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.l-settings-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--p-8);
+
+  margin-block: var(--p-8);
+  margin-bottom: var(--p-16);
+}
+
+.l-settings-section__title {
+  font-weight: 600;
+}
+
+.l-settings-section__body-list {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--p-4);
+}
+
+.l-settings-section__body-list button {
+  align-self: center;
+}
+
+.l-settings-bmc {
+  text-align: center;
+}
+
+@container (width > 440px) {
+  .l-settings-section {
+    grid-template-columns: auto 1fr;
+  }
+
+  .l-settings-bmc {
+    text-align: right;
+  }
+
+}
