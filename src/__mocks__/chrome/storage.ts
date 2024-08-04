@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 globalThis.chrome = globalThis.chrome || {};
 globalThis.chrome.storage = globalThis.chrome.storage || {};
 

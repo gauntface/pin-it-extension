@@ -7,7 +7,7 @@ import {
 } from "../libs/controllers/_open-tabs";
 import { getUrlsToPin } from "../libs/models/_pinned-tabs";
 
-browser.action.onClicked.addListener(async (tab) => {
+browser.action.onClicked.addListener(async (_tab) => {
   logger.log("Extension icon was clicked, loading pinned tabs...");
   const pins = await getUrlsToPin();
   if (pins.length === 0) {

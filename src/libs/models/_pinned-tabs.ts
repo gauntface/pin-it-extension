@@ -16,7 +16,7 @@ export async function setUrlsToPin(urls: string[]): Promise<void> {
     .map((u) => {
       try {
         return new URL(u).toString();
-      } catch (e) {
+      } catch (_e) {
         return "";
       }
     })
