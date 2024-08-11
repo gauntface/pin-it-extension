@@ -31,7 +31,6 @@ browser.action.onClicked.addListener(async (_tab) => {
 browser.windows.onCreated.addListener(async (window) => {
   if (window.type === "normal" && window.id) {
     const windowID = window.id;
-    console.log("New window created");
     for (let i = 0; i <= MAX_RETRIES; i += RETRY_SLEEP_MS) {
       try {
         await closePinnedTabs(windowID);
