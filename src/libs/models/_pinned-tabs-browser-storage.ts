@@ -1,9 +1,9 @@
-import * as browser from "webextension-polyfill";
+import { storage } from "webextension-polyfill";
 
 export const URLS_TO_PIN_STORAGE_KEY = "pinned-tabs";
 
 export async function getUrlsToPin(): Promise<string[]> {
-  const result = await browser.storage.sync.get(URLS_TO_PIN_STORAGE_KEY);
+  const result = await storage.sync.get(URLS_TO_PIN_STORAGE_KEY);
   if (result[URLS_TO_PIN_STORAGE_KEY]) {
     return result[URLS_TO_PIN_STORAGE_KEY];
   }
@@ -21,7 +21,7 @@ export async function setUrlsToPin(urls: string[]): Promise<void> {
       }
     })
     .filter((u) => u.trim().length > 0);
-  await browser.storage.sync.set({
+  await storage.sync.set({
     [URLS_TO_PIN_STORAGE_KEY]: urls,
   });
 }

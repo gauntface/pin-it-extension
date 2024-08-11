@@ -1,6 +1,6 @@
 import * as browser from "webextension-polyfill";
 import { logger } from "../utils/_logger";
-import { getUrlsToPin } from "../../../src/libs/models/_pinned-tabs";
+import { getUrlsToPin } from "../models/_pinned-tabs-browser-storage";
 
 /**
  * @param {number} windowID

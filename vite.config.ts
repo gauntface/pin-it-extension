@@ -59,7 +59,7 @@ async function bundleExtension() {
 
   const output = createWriteStream(zipPath);
   // eslint-disable-next-line new-cap
-  const archive = new archiver("zip", {
+  const archive = archiver("zip", {
     zlib: {
       // Sets the compression level
       level: 9,
