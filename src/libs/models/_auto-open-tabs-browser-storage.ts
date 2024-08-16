@@ -5,7 +5,7 @@ export const AUTO_OPEN_STORAGE_KEY = "auto-open-tabs";
 export async function getAutoOpenTabs(): Promise<AutoOpenTabs> {
   const result = await browser.storage.sync.get(AUTO_OPEN_STORAGE_KEY);
   if (result[AUTO_OPEN_STORAGE_KEY]) {
-    return result[AUTO_OPEN_STORAGE_KEY];
+    return result[AUTO_OPEN_STORAGE_KEY] as AutoOpenTabs;
   }
 
   return {

@@ -7,6 +7,7 @@ import {
 } from "../libs/controllers/_open-tabs";
 import { getUrlsToPin } from "../libs/models/_pinned-tabs-browser-storage";
 import { sleep } from "../libs/utils/_sleep";
+import { getAutoOpenTabs } from "../libs/models/_auto-open-tabs-browser-storage";
 
 const RETRY_SLEEP_MS = 100;
 // After 5 minutes, give up.
@@ -29,6 +30,11 @@ browser.action.onClicked.addListener(async (_tab) => {
 });
 
 browser.windows.onCreated.addListener(async (window) => {
+  const autoOpen = await getAutoOpenTabs();
+  if (!autoOpen.autoOpenTabsNewWindow) {
+    return;
+  }
+
   if (window.type === "normal" && window.id) {
     const windowID = window.id;
     for (let i = 0; i <= MAX_RETRIES; i += RETRY_SLEEP_MS) {
