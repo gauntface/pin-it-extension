@@ -5,7 +5,7 @@ export const URLS_TO_PIN_STORAGE_KEY = "pinned-tabs";
 export async function getUrlsToPin(): Promise<string[]> {
   const result = await storage.sync.get(URLS_TO_PIN_STORAGE_KEY);
   if (result[URLS_TO_PIN_STORAGE_KEY]) {
-    return result[URLS_TO_PIN_STORAGE_KEY];
+    return result[URLS_TO_PIN_STORAGE_KEY] as string[];
   }
 
   return [];
