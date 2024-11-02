@@ -12,7 +12,7 @@
       bind:checked
       on:input
     />
-    <label for="input-switch" class="c-switch__track" />
+    <label for="input-switch" class="c-switch__track"></label>
   </div>
 
   <label for="input-switch" class="c-switch__label">{label}</label>
