@@ -1,4 +1,9 @@
-<a class="c-bmc" href="https://www.buymeacoffee.com/gauntface" target="_blank">
+<a
+  class="c-bmc"
+  href="https://www.buymeacoffee.com/gauntface"
+  target="_blank"
+  aria-label="Buy me a coffee"
+>
   <svg
     class="c-bmc__svg"
     fill="none"
