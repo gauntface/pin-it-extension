@@ -25,8 +25,12 @@ export class PinnedTabsStore implements Readable<PinnedTabs> {
 
   // Get the current state of this store
   private get state(): PinnedTabs {
+    let urls = [...this._urls];
+    if (urls.length === 0) {
+      urls = [""];
+    }
     return {
-      urls: this._urls,
+      urls,
       pendingChanges: this._pendingChanges,
     };
   }
@@ -34,9 +38,6 @@ export class PinnedTabsStore implements Readable<PinnedTabs> {
   // Initialize the values of this store
   private async initialize() {
     this._urls = await getUrlsToPin();
-    if (this._urls.length === 0) {
-      this._urls = [""];
-    }
     this.notifySubscribers();
   }
 
@@ -55,6 +56,10 @@ export class PinnedTabsStore implements Readable<PinnedTabs> {
   };
 
   saveURLs(urls: string[]) {
+    if (JSON.stringify(this._urls) === JSON.stringify(urls)) {
+      return;
+    }
+
     this._urls = urls;
     this._pendingChanges = true;
     this.notifySubscribers();

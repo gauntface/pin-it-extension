@@ -1,6 +1,6 @@
-@import './vars/_fonts.css';
-@import './vars/_dimens.css';
-@import './vars/_colors.css';
+@import "./vars/_fonts.css";
+@import "./vars/_dimens.css";
+@import "./vars/_colors.css";
 
 * {
   box-sizing: border-box;
@@ -42,5 +42,14 @@ button:hover {
 }
 
 button:active {
+  background-color: var(--primary-dark);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
   background-color: var(--primary-dark);
 }

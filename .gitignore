@@ -25,3 +25,7 @@ dist-ssr
 
 gauntface-pin-it-extension.zip
 coverage/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

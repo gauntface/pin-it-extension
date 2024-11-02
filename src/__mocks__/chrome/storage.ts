@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, no-console */
+const STORAGE_DELAY_S = 1;
+
 globalThis.chrome = globalThis.chrome || {};
 globalThis.chrome.storage = globalThis.chrome.storage || {};
 
@@ -11,9 +13,18 @@ globalThis.chrome.storage.sync = {
     for (const [key, value] of Object.entries(map)) {
       storage[key] = value;
     }
-    console.log("Chrome Extension Mock: Storage 4s delay start", storage);
-    await new Promise((resolve) => setTimeout(resolve, 4000));
-    console.log("Chrome Extension Mock: Storage 4s delay end");
+    if (import.meta.env.BUILD_MODE === "development") {
+      console.log(
+        `Chrome Extension Mock: Storage ${STORAGE_DELAY_S}s delay start`,
+        storage,
+      );
+      await new Promise((resolve) =>
+        setTimeout(resolve, STORAGE_DELAY_S * 1000),
+      );
+      console.log(
+        `Chrome Extension Mock: Storage ${STORAGE_DELAY_S}s delay end`,
+      );
+    }
   },
 };
 

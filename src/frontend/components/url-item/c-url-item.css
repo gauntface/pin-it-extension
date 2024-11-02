@@ -5,10 +5,11 @@
 
 input {
   width: 100%;
-  padding: var(--p-3) var(--p-4);
+  padding: calc(var(--p-3) + 2px) calc(var(--p-4) + 2px);
   border-radius: var(--br-2) 0 0 var(--br-2);
   border-style: solid;
   border-width: 1px;
+  outline: none;
 }
 
 button {
@@ -16,8 +17,16 @@ button {
   border-radius: 0 var(--br-2) var(--br-2) 0;
 }
 
+input:focus,
 input:invalid {
-  outline-color: var(--error-color);
-  border-color: var(--error-color);
+  padding: var(--p-3) var(--p-4);
   border-width: 3px;
+}
+
+input:focus {
+  border-color: var(--primary-light);
+}
+
+input:invalid {
+  border-color: var(--error-color);
 }

@@ -19,7 +19,9 @@
     bind:this={inputElement}
     on:input={_handleURLChange}
   />
-  <button on:click={() => onDeleteURL(id)}>Delete</button>
+  <button on:click={() => onDeleteURL(id)} disabled={url === "" && id === 0}
+    >Delete</button
+  >
 </div>
 
 <style src="./c-url-item.css"></style>
