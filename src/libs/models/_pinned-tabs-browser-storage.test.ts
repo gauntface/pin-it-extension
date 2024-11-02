@@ -1,6 +1,6 @@
-import { expect, describe, test, beforeEach, afterEach, vi } from "vitest";
-import { getUrlsToPin, setUrlsToPin } from "./_pinned-tabs-browser-storage";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { storage } from "webextension-polyfill";
+import { getUrlsToPin, setUrlsToPin } from "./_pinned-tabs-browser-storage";
 
 vi.mock("webextension-polyfill", () => {
   return {

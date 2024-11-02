@@ -1,7 +1,9 @@
+import { mount } from "svelte";
+
 import Options from "./Options.svelte";
 import "./options.css";
 
-const app = new Options({
+const app = mount(Options, {
   target: document.getElementById("app") as HTMLElement,
 });
 

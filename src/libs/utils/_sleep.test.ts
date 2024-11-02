@@ -1,4 +1,4 @@
-import { expect, test, beforeEach, afterEach, vi } from "vitest";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { sleep } from "./_sleep";
 
 beforeEach(() => {

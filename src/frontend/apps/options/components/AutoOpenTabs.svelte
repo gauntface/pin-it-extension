@@ -20,6 +20,7 @@
   <Checkbox
     label={"Automatically open tabs when a new window is opened"}
     checked={autoOpenTabsNewWindow}
+    testId="auto-open-tabs-checkbox"
     on:input={updateOpenTabsNewWindow}
   />
 </LayoutOptionsSection>

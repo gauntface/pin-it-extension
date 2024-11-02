@@ -1,6 +1,7 @@
 <script lang="ts">
   export let label: string;
   export let checked: boolean;
+  export let testId: string | undefined = undefined;
 </script>
 
 <div class="l-switch">
@@ -9,6 +10,7 @@
       id="input-switch"
       type="checkbox"
       class="c-switch__input"
+      data-testid={testId}
       bind:checked
       on:input
     />

@@ -1,13 +1,13 @@
 import * as browser from "webextension-polyfill";
+import {
+  closePinnedTabs,
+  openPinnedTabs,
+} from "../libs/controllers/_open-tabs";
+import { getAutoOpenTabs } from "../libs/models/_auto-open-tabs-browser-storage";
+import { getUrlsToPin } from "../libs/models/_pinned-tabs-browser-storage";
 import "../libs/monitoring/_sentry";
 import { logger } from "../libs/utils/_logger";
-import {
-  openPinnedTabs,
-  closePinnedTabs,
-} from "../libs/controllers/_open-tabs";
-import { getUrlsToPin } from "../libs/models/_pinned-tabs-browser-storage";
 import { sleep } from "../libs/utils/_sleep";
-import { getAutoOpenTabs } from "../libs/models/_auto-open-tabs-browser-storage";
 
 const RETRY_SLEEP_MS = 100;
 // After 5 minutes, give up.
