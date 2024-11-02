@@ -1,11 +1,11 @@
-import { defineConfig } from "vite";
-import { resolve, join } from "path";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-import semver from "semver";
-import { readFile, writeFile, rm } from "fs/promises";
-import { createWriteStream } from "fs";
-import { execSync } from "node:child_process";
 import archiver from "archiver";
+import { createWriteStream } from "fs";
+import { readFile, rm, writeFile } from "fs/promises";
+import { execSync } from "node:child_process";
+import { join, resolve } from "path";
+import semver from "semver";
+import { defineConfig } from "vite";
 
 async function writeManifest() {
   console.log("Setting up extension manifest");
@@ -141,4 +141,7 @@ export default defineConfig({
       },
     },
   ],
+  test: {
+    include: ["src/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
+  },
 });

@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "test": "npm run lint && npm run vitest && test:e2e",
+    "test": "npm run lint && npm run vitest:ci && pnpm run test:e2e",
     "test:ci": "npm run lint:ci && npm run vitest:ci && test:e2e",
     "test:e2e": "playwright test",
     "test:e2e:debug": "playwright test --debug",
