@@ -46,6 +46,7 @@
     "globals": "^15.9.0",
     "lodash-es": "^4.17.21",
     "prettier": "^3.3.0",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-svelte": "^3.2.3",
     "semver": "^7.6.2",
     "svelte": "^5.0.0",

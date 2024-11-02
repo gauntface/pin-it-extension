@@ -1,9 +1,9 @@
+import debounce, { type DebouncedFunc } from "lodash-es/debounce";
 import {
   type Readable,
   type Subscriber,
   type Unsubscriber,
 } from "svelte/store";
-import debounce, { type DebouncedFunc } from "lodash-es/debounce";
 import {
   getAutoOpenTabs,
   setAutoOpenTabs,

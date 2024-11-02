@@ -1,10 +1,10 @@
+import debounce, { type DebouncedFunc } from "lodash-es/debounce";
 import {
   type Readable,
   type Subscriber,
   type Unsubscriber,
 } from "svelte/store";
 import { getUrlsToPin, setUrlsToPin } from "./_pinned-tabs-browser-storage";
-import debounce, { type DebouncedFunc } from "lodash-es/debounce";
 
 export class PinnedTabsStore implements Readable<PinnedTabs> {
   private _subscribers = new Set<Subscriber<PinnedTabs>>();
