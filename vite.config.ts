@@ -142,6 +142,7 @@ export default defineConfig({
     },
   ],
   test: {
-    include: ["src/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
+    root: "src",
+    setupFiles: ["./vitestSetupMocks.ts"],
   },
 });
