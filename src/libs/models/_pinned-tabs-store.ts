@@ -56,7 +56,10 @@ export class PinnedTabsStore implements Readable<PinnedTabs> {
   };
 
   saveURLs(urls: string[]) {
-    if (JSON.stringify(this._urls) === JSON.stringify(urls)) {
+    if (
+      JSON.stringify(this._urls) === JSON.stringify(urls) &&
+      this._pendingChanges === false
+    ) {
       return;
     }
 
@@ -65,6 +68,10 @@ export class PinnedTabsStore implements Readable<PinnedTabs> {
     this.notifySubscribers();
     this._debounceCallCount++;
     this._debouncedSetURLs();
+  }
+
+  cancelSave() {
+    this._debouncedSetURLs.cancel();
   }
 }
 

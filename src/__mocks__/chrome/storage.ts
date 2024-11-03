@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, no-console */
-const STORAGE_DELAY_S = 1;
+const STORAGE_DELAY_S = 4;
 
 globalThis.chrome = globalThis.chrome || {};
 globalThis.chrome.storage = globalThis.chrome.storage || {};
@@ -13,7 +13,7 @@ globalThis.chrome.storage.sync = {
     for (const [key, value] of Object.entries(map)) {
       storage[key] = value;
     }
-    if (import.meta.env.BUILD_MODE === "development") {
+    if (import.meta.env.VITE_ENV === "development") {
       console.log(
         `Chrome Extension Mock: Storage ${STORAGE_DELAY_S}s delay start`,
         storage,
