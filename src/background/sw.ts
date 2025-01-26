@@ -23,35 +23,53 @@ browser.action.onClicked.addListener(async (_tab) => {
   }
 
   const window = await browser.windows.getCurrent();
-  if (window.id) {
-    await closePinnedTabs(window.id);
-    await openPinnedTabs(window.id);
-  }
+  closeAndOpenTabs(window);
 });
 
-browser.windows.onCreated.addListener(async (window) => {
-  const autoOpen = await getAutoOpenTabs();
-  if (!autoOpen.autoOpenTabsNewWindow) {
+browser.windows.onCreated.addListener(
+  async (window: browser.Windows.Window) => {
+    const autoOpen = await getAutoOpenTabs();
+    if (!autoOpen.autoOpenTabsNewWindow) {
+      return;
+    }
+
+    closeAndOpenTabs(window);
+  },
+);
+
+async function closeAndOpenTabs(window: browser.Windows.Window) {
+  if (!window) {
+    logger.log("No window provided.");
     return;
   }
 
-  if (window.type === "normal" && window.id) {
-    const windowID = window.id;
-    for (let i = 0; i <= MAX_RETRIES; i += RETRY_SLEEP_MS) {
-      try {
-        await closePinnedTabs(windowID);
-        await openPinnedTabs(windowID);
-        break;
-      } catch (err) {
-        // Sometimes the browser will throw if we try to open tabs too
-        // quickly.
-        logger.debug("Failed to open tabs, retrying...", err);
-      }
-      await sleep(RETRY_SLEEP_MS);
-      const windowToManage = await browser.windows.get(windowID);
-      if (windowToManage === undefined) {
-        break;
-      }
+  if (window.type !== "normal") {
+    logger.log(`Window has an unexpected type: ${window.type}`);
+    return;
+  }
+
+  if (!window.id) {
+    logger.log("Window has no ID.");
+    return;
+  }
+
+  const windowID = window.id;
+
+  for (let i = 0; i <= MAX_RETRIES; i += RETRY_SLEEP_MS) {
+    try {
+      await closePinnedTabs(windowID);
+      await openPinnedTabs(windowID);
+      break;
+    } catch (err) {
+      // Sometimes the browser will throw if we try to open tabs too
+      // quickly.
+      logger.debug("Failed to open tabs, retrying...", err);
+    }
+    await sleep(RETRY_SLEEP_MS);
+    const windowToManage = await browser.windows.get(windowID);
+    if (windowToManage === undefined) {
+      logger.log("Window disappeared, giving up...");
+      break;
     }
   }
-});
+}

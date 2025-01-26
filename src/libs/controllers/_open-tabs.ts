@@ -44,8 +44,10 @@ export async function closePinnedTabs(windowID: number) {
       logger.debug(`Skipping tab ${i} because it has no ID`);
       continue;
     }
-    logger.debug(`Removing tab ${i}`);
     tabsToClose.push(t.id);
   }
-  await browser.tabs.remove(tabsToClose);
+  for (const tabID of tabsToClose) {
+    logger.debug(`Removing tab ${tabID}`);
+    await browser.tabs.remove(tabID);
+  }
 }
