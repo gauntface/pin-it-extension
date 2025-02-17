@@ -46,8 +46,6 @@ export async function closePinnedTabs(windowID: number) {
     }
     tabsToClose.push(t.id);
   }
-  for (const tabID of tabsToClose) {
-    logger.debug(`Removing tab ${tabID}`);
-    await browser.tabs.remove(tabID);
-  }
+  logger.debug(`Removing tabs:`, tabsToClose);
+  await browser.tabs.remove(tabsToClose);
 }
