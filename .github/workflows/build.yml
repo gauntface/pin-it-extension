@@ -9,6 +9,9 @@ jobs:
       # Get the code
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
+      - name: Latest corepack
+        run: npm i -g corepack@latest # https://github.com/nodejs/corepack/issues/631
+
       - name: Enable corepack
         run: corepack enable # Enables use of pnpm
 
