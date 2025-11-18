@@ -100,4 +100,5 @@ jobs:
             --source-dir=dist/ \
             --api-key=$AMO_JWT_ISSUER \
             --api-secret=$AMO_JWT_SECRET \
-            --upload-source-code=gauntface-pin-it-src.zip
+            --upload-source-code=gauntface-pin-it-src.zip \
+            --approval-timeout=0
