@@ -14,14 +14,16 @@
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:ui": "playwright test --ui",
     "test:server": "pnpm run dev --mode test --host 127.0.0.1 --port 3000",
-    "lint": "pnpm run eslint --fix && pnpm run prettier --write",
-    "lint:ci": "pnpm run eslint && pnpm run prettier --check",
+    "lint": "pnpm run eslint --fix && pnpm run prettier --write && pnpm run web-ext:lint",
+    "lint:ci": "pnpm run eslint && pnpm run prettier --check && pnpm run web-ext:lint",
     "eslint": "eslint 'src/**/*.{js,ts,svelte}'",
     "prettier": "prettier 'src/**/*.{js,ts,svelte}'",
+    "web-ext:lint": "pnpm run build:dev && cd dist && web-ext lint",
     "preview": "vite preview",
     "vitest": "vitest --coverage",
     "vitest:ci": "vitest run",
-    "chrome-webstore-upload": "chrome-webstore-upload"
+    "chrome-webstore-upload": "chrome-webstore-upload",
+    "web-ext": "web-ext"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -57,6 +59,7 @@
     "typescript-eslint": "^8.0.0",
     "vite": "^5.2.12",
     "vitest": "^2.0.5",
+    "web-ext": "^9.1.0",
     "webextension-polyfill": "^0.12.0"
   }
 }

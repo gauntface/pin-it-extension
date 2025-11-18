@@ -89,3 +89,15 @@ jobs:
             --client-id $CLIENT_ID \
             --client-secret $CLIENT_SECRET \
             --refresh-token $REFRESH_TOKEN
+
+      - name: Upload extension to Firefox
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          pnpm run web-ext sign \
+            --channel=listed \
+            --source-dir=dist/ \
+            --api-key=$AMO_JWT_ISSUER \
+            --api-secret=$AMO_JWT_SECRET \
+            --upload-source-code=gauntface-pin-it-src.zip

@@ -16,11 +16,22 @@
     }
   },
   "options_page": "options.html",
-  "permissions": [
-    "storage"
-  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": ["storage"],
   "background": {
     "service_worker": "scripts/background/sw.js",
+    "scripts": ["scripts/background/sw.js"],
     "type": "module"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{9e282a42-190a-4fbe-9221-5de2d672e339}",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
   }
 }
