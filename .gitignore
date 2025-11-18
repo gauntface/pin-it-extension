@@ -23,9 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-gauntface-pin-it-extension.zip
+gauntface-pin-it-*.zip
 coverage/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/web-ext-artifacts/
