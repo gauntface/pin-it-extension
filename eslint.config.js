@@ -1,9 +1,9 @@
 import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import eslintPluginSvelte from "eslint-plugin-svelte";
 import eslintConfigPrettier from "eslint-config-prettier";
+import eslintPluginSvelte from "eslint-plugin-svelte";
 import globals from "globals";
 import svelteParser from "svelte-eslint-parser";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   js.configs.recommended,
@@ -11,6 +11,9 @@ export default tseslint.config(
   ...eslintPluginSvelte.configs["flat/recommended"],
   eslintConfigPrettier,
   ...eslintPluginSvelte.configs["flat/prettier"],
+  {
+    ignores: ["playwright.config.ts", "e2e/"],
+  },
   {
     files: ["**/*.svelte"],
     languageOptions: {
