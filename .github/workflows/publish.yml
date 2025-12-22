@@ -64,7 +64,7 @@ jobs:
         id: create_release
         with:
           generateReleaseNotes: true
-          artifacts: "build/zips/*.zip"
+          artifacts: "build/zip/*.zip"
           artifactContentType: application/zip
           makeLatest: true
           name: "v${{ env.EXTENSION_VERSION }}"
@@ -73,6 +73,7 @@ jobs:
       - name: Upload sourcemaps to Sentry
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          EXTENSION_VERSION: ${{ env.EXTENSION_VERSION }}
         run: ./sentry-upload.js
 
       - name: Upload extension to Chrome Web Store
@@ -84,7 +85,7 @@ jobs:
         run: |
           pnpm run chrome-webstore-upload upload \
             --auto-publish \
-            --source build/zips/gauntface-pin-it-extension-chrome.zip \
+            --source build/zip/gauntface-pin-it-extension-chrome.zip \
             --extension-id $EXTENSION_ID \
             --client-id $CLIENT_ID \
             --client-secret $CLIENT_SECRET \
