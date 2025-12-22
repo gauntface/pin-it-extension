@@ -28,11 +28,15 @@ async function writeManifest(browserType: BrowserType, buildDir: string) {
       manifest["options_ui"] = {
         page: "options.html",
       };
+
+      manifest["background"]["scripts"] = ["scripts/background/sw.js"];
       break;
     }
     case "chrome": {
       // Chrome is nicer with a full page tab
       manifest["options_page"] = "options.html";
+      // Chrome supports service workers
+      manifest["background"]["service_worker"] = "scripts/background/sw.js";
 
       if (process.env.NODE_ENV !== "production") {
         // Add dev key so refreshes are consistent
