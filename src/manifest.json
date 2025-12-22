@@ -15,10 +15,6 @@
       "512": "images/icons/favicon-512x512.png"
     }
   },
-  "options_page": "options.html",
-  "options_ui": {
-    "page": "options.html"
-  },
   "permissions": ["storage"],
   "background": {
     "service_worker": "scripts/background/sw.js",
