@@ -1,21 +1,56 @@
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import archiver from "archiver";
 import { createWriteStream } from "fs";
-import { readFile, rm, writeFile } from "fs/promises";
+import { cp, readFile, rm, writeFile } from "fs/promises";
 import { execSync } from "node:child_process";
+import { mkdir } from "node:fs/promises";
+import path from "node:path";
 import { join, resolve } from "path";
 import semver from "semver";
 import { defineConfig } from "vite";
 
-async function writeManifest() {
+async function copyDist(buildDir: string) {
+  const distDir = resolve(__dirname, "dist");
+  await cp(distDir, buildDir, { recursive: true });
+  console.log(`Copied ${distDir} to ${buildDir}`);
+}
+
+async function writeManifest(browserType: BrowserType, buildDir: string) {
   console.log("Setting up extension manifest");
   const manifestBuffer = await readFile(
     resolve(__dirname, "src/manifest.json"),
   );
   const manifest = JSON.parse(manifestBuffer.toString());
 
+  switch (browserType) {
+    case "firefox": {
+      // FF options pages are generally shown in an inline tab
+      manifest["options_ui"] = {
+        page: "options.html",
+      };
+
+      manifest["background"]["scripts"] = ["scripts/background/sw.js"];
+      break;
+    }
+    case "chrome": {
+      // Chrome is nicer with a full page tab
+      manifest["options_page"] = "options.html";
+      // Chrome supports service workers
+      manifest["background"]["service_worker"] = "scripts/background/sw.js";
+
+      if (process.env.NODE_ENV !== "production") {
+        // Add dev key so refreshes are consistent
+        manifest.key = "developmentkalohmonpfgdhimepifhl";
+      }
+      break;
+    }
+    default: {
+      const bt: never = browserType;
+      throw new Error(`Unsupported browser type: ${bt}`);
+    }
+  }
+
   if (process.env.NODE_ENV !== "production") {
-    manifest.key = "developmentkalohmonpfgdhimepifhl";
     manifest.name = `Dev: ${manifest.name}`;
     for (const k of Object.keys(manifest.icons)) {
       const parts = manifest.icons[k].split(".");
@@ -35,11 +70,9 @@ async function writeManifest() {
     manifest.version = newVersion.version;
   }
 
-  await writeFile(
-    resolve(__dirname, "dist/manifest.json"),
-    JSON.stringify(manifest, null, 2),
-  );
-  console.log(`written manifest`);
+  const manifestPath = resolve(buildDir, "manifest.json");
+  await writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+  console.log(`written manifest to ${manifestPath}`);
 }
 
 function injectSentryDebugIDs() {
@@ -48,9 +81,17 @@ function injectSentryDebugIDs() {
   execSync(`${sentryCli} sourcemaps inject ${resolve(__dirname, "dist")}`);
 }
 
-async function bundleExtension() {
+async function bundleExtension(
+  browserType: BrowserType,
+  buildDir: string,
+  zipsDir: string,
+) {
   console.log("Bundling zip");
-  const zipPath = join(resolve(__dirname), "gauntface-pin-it-extension.zip");
+  await mkdir(zipsDir, { recursive: true });
+  const zipPath = join(
+    zipsDir,
+    `gauntface-pin-it-extension-${browserType}.zip`,
+  );
   try {
     await rm(zipPath);
   } catch (e) {
@@ -66,7 +107,7 @@ async function bundleExtension() {
     },
   });
 
-  const distDir = resolve(__dirname, "dist");
+  const distDir = resolve(buildDir);
 
   try {
     await new Promise((resolve, reject) => {
@@ -199,10 +240,29 @@ export default defineConfig({
     {
       name: "bundle-extension",
       closeBundle: async () => {
-        await writeManifest();
+        const buildPath = path.join(__dirname, "build");
+        const buildZipsPath = path.join(buildPath, "zip");
+        const chromePath = path.join(buildPath, "chrome");
+        const ffPath = path.join(buildPath, "firefox");
+
         await injectSentryDebugIDs();
-        await bundleExtension();
-        await bundleExtensionSrc();
+
+        const builds: Array<{ browser: BrowserType; path: string }> = [
+          {
+            browser: "chrome",
+            path: chromePath,
+          },
+          {
+            browser: "firefox",
+            path: ffPath,
+          },
+        ];
+        for (const b of builds) {
+          await copyDist(b.path);
+          await writeManifest(b.browser, b.path);
+          await bundleExtension(b.browser, b.path, buildZipsPath);
+          await bundleExtensionSrc();
+        }
       },
     },
   ],
@@ -211,3 +271,5 @@ export default defineConfig({
     setupFiles: ["./vitestSetupMocks.ts"],
   },
 });
+
+type BrowserType = "chrome" | "firefox";

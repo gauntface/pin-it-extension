@@ -64,7 +64,7 @@ jobs:
         id: create_release
         with:
           generateReleaseNotes: true
-          artifacts: gauntface-pin-it-extension.zip
+          artifacts: "build/zips/*.zip"
           artifactContentType: application/zip
           makeLatest: true
           name: "v${{ env.EXTENSION_VERSION }}"
@@ -84,7 +84,7 @@ jobs:
         run: |
           pnpm run chrome-webstore-upload upload \
             --auto-publish \
-            --source gauntface-pin-it-extension.zip \
+            --source build/zips/gauntface-pin-it-extension-chrome.zip \
             --extension-id $EXTENSION_ID \
             --client-id $CLIENT_ID \
             --client-secret $CLIENT_SECRET \
@@ -97,7 +97,7 @@ jobs:
         run: |
           pnpm run web-ext sign \
             --channel=listed \
-            --source-dir=dist/ \
+            --source-dir=build/firefox/ \
             --api-key=$AMO_JWT_ISSUER \
             --api-secret=$AMO_JWT_SECRET \
             --upload-source-code=gauntface-pin-it-src.zip \

@@ -12,6 +12,7 @@ a {
 }
 
 .l-settings-bmc {
+  margin-top: var(--p-8);
   text-align: center;
 }
 
