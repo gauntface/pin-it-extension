@@ -7,11 +7,12 @@ import { getAutoOpenTabs } from "../libs/models/_auto-open-tabs-browser-storage"
 import { getUrlsToPin } from "../libs/models/_pinned-tabs-browser-storage";
 import "../libs/monitoring/_sentry";
 import { logger } from "../libs/utils/_logger";
-import { sleep } from "../libs/utils/_sleep";
 
-const RETRY_SLEEP_MS = 100;
-// After 5 minutes, give up.
-const MAX_RETRIES = 5 * 60 * 1000;
+// Windows currently being closed+reopened, keyed by window ID. Guards
+// against action.onClicked and windows.onCreated racing on the same
+// window - without this, two concurrent close+open passes on one tab
+// strip is itself a common cause of "Tabs cannot be edited right now".
+const windowsBeingManaged = new Set<number>();
 
 browser.action.onClicked.addListener(async (_tab) => {
   logger.log("Extension icon was clicked, loading pinned tabs...");
@@ -54,22 +55,20 @@ async function closeAndOpenTabs(window: browser.Windows.Window) {
   }
 
   const windowID = window.id;
+  if (windowsBeingManaged.has(windowID)) {
+    logger.log(
+      `Window ${windowID} is already being managed, skipping duplicate request.`,
+    );
+    return;
+  }
 
-  for (let i = 0; i <= MAX_RETRIES; i += RETRY_SLEEP_MS) {
-    try {
-      await closePinnedTabs(windowID);
-      await openPinnedTabs(windowID);
-      break;
-    } catch (err) {
-      // Sometimes the browser will throw if we try to open tabs too
-      // quickly.
-      logger.debug("Failed to open tabs, retrying...", err);
-    }
-    await sleep(RETRY_SLEEP_MS);
-    const windowToManage = await browser.windows.get(windowID);
-    if (windowToManage === undefined) {
-      logger.log("Window disappeared, giving up...");
-      break;
-    }
+  windowsBeingManaged.add(windowID);
+  try {
+    await closePinnedTabs(windowID);
+    await openPinnedTabs(windowID);
+  } catch (err) {
+    logger.error(`Giving up opening tabs in window ${windowID}.`, err);
+  } finally {
+    windowsBeingManaged.delete(windowID);
   }
 }
