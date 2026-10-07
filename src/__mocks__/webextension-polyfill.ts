@@ -7,7 +7,13 @@ export const storage = {
   },
 };
 
+export const tabs = {
+  create: vi.fn().mockResolvedValue({}),
+  remove: vi.fn().mockResolvedValue(undefined),
+};
+
 const browser = {
   storage,
+  tabs,
 };
 export default browser;

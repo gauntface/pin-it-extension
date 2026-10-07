@@ -24,7 +24,7 @@ export async function openPinnedTabs(windowID: number): Promise<void> {
 
   for (const u of urlsToPin) {
     logger.debug(`Creating tab for ${u}`);
-    await retryWithBackoff(
+    const tab = await retryWithBackoff(
       () =>
         browser.tabs.create({
           // Don't force focus on it.
@@ -38,6 +38,22 @@ export async function openPinnedTabs(windowID: number): Promise<void> {
         }),
       TAB_EDIT_RETRY_OPTS,
     );
+
+    // Picture-in-Picture windows (e.g. Google Meet when switching tabs) are
+    // reported as "normal" (https://crbug.com/438514981) but can't hold tabs,
+    // so Chrome opens the tab in another window. Undo it and stop, otherwise
+    // every PiP window adds duplicate pinned tabs.
+    if (tab.windowId !== windowID) {
+      logger.log(`Window ${windowID} can't hold tabs, skipping.`);
+      const tabID = tab.id;
+      if (tabID) {
+        await retryWithBackoff(
+          () => browser.tabs.remove(tabID),
+          TAB_EDIT_RETRY_OPTS,
+        );
+      }
+      return;
+    }
   }
 }
 
