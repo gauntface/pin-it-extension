@@ -24,9 +24,9 @@ async function writeManifest(browserType: BrowserType, buildDir: string) {
 
   switch (browserType) {
     case "firefox": {
-      // FF options pages are generally shown in an inline tab
       manifest["options_ui"] = {
         page: "options.html",
+        open_in_tab: true,
       };
 
       manifest["background"]["scripts"] = ["scripts/background/sw.js"];
