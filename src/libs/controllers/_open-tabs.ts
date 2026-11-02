@@ -15,16 +15,20 @@ const TAB_EDIT_RETRY_OPTS = {
 };
 
 /**
+ * Opens the configured pins in the window and returns the IDs of the new
+ * tabs.
+ *
  * @param {number} windowID
  */
-export async function openPinnedTabs(windowID: number): Promise<void> {
+export async function openPinnedTabs(windowID: number): Promise<Set<number>> {
   logger.log(`Opening tabs in window ${windowID}`);
 
   const urlsToPin = await getUrlsToPin();
+  const newTabIDs = new Set<number>();
 
   for (const u of urlsToPin) {
     logger.debug(`Creating tab for ${u}`);
-    await retryWithBackoff(
+    const tab = await retryWithBackoff(
       () =>
         browser.tabs.create({
           // Don't force focus on it.
@@ -38,13 +42,24 @@ export async function openPinnedTabs(windowID: number): Promise<void> {
         }),
       TAB_EDIT_RETRY_OPTS,
     );
+    if (tab.id !== undefined) {
+      newTabIDs.add(tab.id);
+    }
   }
+  return newTabIDs;
 }
 
 /**
+ * Closes the pinned tabs in the window, except for `keepTabIDs` and any
+ * tab playing sound.
+ *
  * @param {number} windowID
+ * @param {Set<number>} keepTabIDs
  */
-export async function closePinnedTabs(windowID: number) {
+export async function closePinnedTabs(
+  windowID: number,
+  keepTabIDs: Set<number>,
+) {
   const tabs = await browser.tabs.query({
     pinned: true,
     windowId: windowID,
@@ -58,6 +73,9 @@ export async function closePinnedTabs(windowID: number) {
     }
     if (!t.id) {
       logger.debug(`Skipping tab ${i} because it has no ID`);
+      continue;
+    }
+    if (keepTabIDs.has(t.id)) {
       continue;
     }
     tabsToClose.push(t.id);

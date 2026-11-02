@@ -82,8 +82,8 @@ async function closeAndOpenTabs(window: browser.Windows.Window) {
 
   windowsBeingManaged.add(windowID);
   try {
-    await closePinnedTabs(windowID);
-    await openPinnedTabs(windowID);
+    const newTabIDs = await openPinnedTabs(windowID);
+    await closePinnedTabs(windowID, newTabIDs);
   } catch (err) {
     logger.error(`Giving up opening tabs in window ${windowID}.`, err);
   } finally {

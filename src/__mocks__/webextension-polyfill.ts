@@ -7,7 +7,14 @@ export const storage = {
   },
 };
 
+export const tabs = {
+  create: vi.fn(),
+  query: vi.fn(),
+  remove: vi.fn(),
+};
+
 const browser = {
   storage,
+  tabs,
 };
 export default browser;
