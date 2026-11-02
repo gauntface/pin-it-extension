@@ -30,6 +30,10 @@ async function writeManifest(browserType: BrowserType, buildDir: string) {
       };
 
       manifest["background"]["scripts"] = ["scripts/background/sw.js"];
+
+      // Firefox only: used for the "Options" item on the toolbar icon's
+      // right-click menu.
+      manifest["permissions"].push("menus");
       break;
     }
     case "chrome": {
