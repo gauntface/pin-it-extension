@@ -38,7 +38,7 @@
 
   function gripMouseUp(event: MouseEvent) {
     const grip = event.target as HTMLElement;
-    const parent = grip?.parentNode as HTMLElement;
+    const parent = grip.closest(".c-pinned-urls-list__draggable-grip");
     parent?.setAttribute("draggable", "false");
   }
 
@@ -51,6 +51,8 @@
     originalDraggedItemIndex = index;
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = "move";
+      // Firefox does not start a drag unless some data is set.
+      event.dataTransfer.setData("text/plain", urls[index]);
     }
   }
 
@@ -70,8 +72,15 @@
     draggedItem = index;
   }
 
+  function onDrop(event: DragEvent) {
+    // Stops Firefox inserting the dragged text into the input under the
+    // cursor.
+    event.preventDefault();
+  }
+
   function onDragEnd(event: DragEvent) {
     event.preventDefault();
+    (event.target as HTMLElement).setAttribute("draggable", "false");
     // Save the new set of URLs (it'll handle the scenario of no change)
     pinnedURLs.saveURLs(urls);
     draggedItem = null;
@@ -87,6 +96,7 @@
         class="c-pinned-urls-list__draggable-container"
         class:c-pinned-urls-list--being-dragged={draggedItem === i}
         on:dragover={(e) => onDragOver(e, i)}
+        on:drop={(e) => onDrop(e)}
         on:dragend={(e) => onDragEnd(e)}
       >
         <div

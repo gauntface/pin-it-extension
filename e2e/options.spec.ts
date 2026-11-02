@@ -122,3 +122,38 @@ async function testAutoOpenTabsToggle(page: Page) {
   await expect(loading).toBeVisible();
   await expect(loading).toBeHidden({ timeout: 5000 });
 }
+
+test("Reorder pinned tabs by dragging", async ({ page }) => {
+  await page.goto("/options-mock.html");
+  await expect(page.getByText("Loading")).not.toBeVisible();
+
+  const inputs = page.getByPlaceholder("Enter a URL");
+  const addURLButton = page.getByRole("button", { name: "Add URL" });
+  await inputs.nth(0).fill("https://one.example");
+  await addURLButton.click();
+  await inputs.nth(1).fill("https://two.example");
+  await addURLButton.click();
+  await inputs.nth(2).fill("https://three.example");
+
+  await page.evaluate(() => {
+    window.addEventListener("dragstart", (e) => {
+      document.body.dataset.dragTypes = [...(e.dataTransfer?.types ?? [])].join(
+        ",",
+      );
+    });
+  });
+
+  await page
+    .locator(".c-pinned-urls-list__draggable-grip")
+    .nth(0)
+    .dragTo(page.locator(".c-pinned-urls-list__draggable-container").nth(2));
+
+  // Firefox does not start a drag unless dragstart sets some data.
+  await expect(page.locator("body")).toHaveAttribute(
+    "data-drag-types",
+    /text\/plain/,
+  );
+  await expect(inputs.nth(0)).toHaveValue("https://two.example");
+  await expect(inputs.nth(1)).toHaveValue("https://three.example");
+  await expect(inputs.nth(2)).toHaveValue("https://one.example");
+});
