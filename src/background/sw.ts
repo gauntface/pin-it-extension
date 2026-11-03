@@ -1,8 +1,5 @@
 import * as browser from "webextension-polyfill";
-import {
-  closePinnedTabs,
-  openPinnedTabs,
-} from "../libs/controllers/_open-tabs";
+import { syncPinnedTabs } from "../libs/controllers/_open-tabs";
 import { getAutoOpenTabs } from "../libs/models/_auto-open-tabs-browser-storage";
 import { getUrlsToPin } from "../libs/models/_pinned-tabs-browser-storage";
 import "../libs/monitoring/_sentry";
@@ -67,6 +64,11 @@ async function closeAndOpenTabs(window: browser.Windows.Window) {
     return;
   }
 
+  if (window.alwaysOnTop === true) {
+    logger.log(`Window always on top`);
+    return;
+  }
+
   if (!window.id) {
     logger.log("Window has no ID.");
     return;
@@ -82,10 +84,9 @@ async function closeAndOpenTabs(window: browser.Windows.Window) {
 
   windowsBeingManaged.add(windowID);
   try {
-    const newTabIDs = await openPinnedTabs(windowID);
-    await closePinnedTabs(windowID, newTabIDs);
+    await syncPinnedTabs(windowID);
   } catch (err) {
-    logger.error(`Giving up opening tabs in window ${windowID}.`, err);
+    logger.error(`Giving up syncing tabs in window ${windowID}.`, err);
   } finally {
     windowsBeingManaged.delete(windowID);
   }

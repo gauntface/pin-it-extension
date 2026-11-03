@@ -11,6 +11,7 @@ export const tabs = {
   create: vi.fn(),
   query: vi.fn(),
   remove: vi.fn(),
+  update: vi.fn(),
 };
 
 const browser = {
