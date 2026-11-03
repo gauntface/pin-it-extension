@@ -42,7 +42,17 @@ export async function openPinnedTabs(windowID: number): Promise<Set<number>> {
         }),
       TAB_EDIT_RETRY_OPTS,
     );
+    // If Chrome opens a picture in picture, it'll create a tab in
+    // the parent window with auto-open setting enabled.
+    // Ideally this would use the window kind but we can't at the moment:
+    // https://crbug.com/438514981
     if (tab.id !== undefined) {
+      if (tab.windowId !== windowID) {
+        await browser.tabs.remove(tab.id);
+        throw new Error(
+          `Tab opened in the wrong window. Expected: ${windowID}, Got: ${tab.windowId}`,
+        );
+      }
       newTabIDs.add(tab.id);
     }
   }
