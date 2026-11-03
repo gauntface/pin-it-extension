@@ -64,9 +64,9 @@ describe("open and close pinned tabs", () => {
       calls.push(`remove ${JSON.stringify(ids)}`);
     });
 
-    const newTabIDs = await openPinnedTabs(WINDOW_ID);
-
-    expect(newTabIDs).toEqual(new Set([100]));
+    await expect(openPinnedTabs(WINDOW_ID)).rejects.toThrow(
+      "Tab opened in the wrong window. Expected: 1, Got: 2",
+    );
     expect(calls).toEqual([
       "create https://a.example",
       "create https://b.example",
