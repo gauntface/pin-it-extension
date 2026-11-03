@@ -14,85 +14,77 @@ const TAB_EDIT_RETRY_OPTS = {
   maxDelayMs: 800,
 };
 
+type TabWithID = browser.Tabs.Tab & { id: number };
+
 /**
- * Opens the configured pins in the window and returns the IDs of the new
- * tabs.
- *
- * @param {number} windowID
+ * We sync tabs to ensure at least 1 tab is open in the window.
+ * @param windowID
  */
-export async function openPinnedTabs(windowID: number): Promise<Set<number>> {
-  logger.log(`Opening tabs in window ${windowID}`);
+export async function syncPinnedTabs(windowID: number): Promise<void> {
+  logger.log(`Syncing tabs in window ${windowID}`);
 
   const urlsToPin = await getUrlsToPin();
-  const newTabIDs = new Set<number>();
-
-  for (const u of urlsToPin) {
-    logger.debug(`Creating tab for ${u}`);
-    const tab = await retryWithBackoff(
-      () =>
-        browser.tabs.create({
-          // Don't force focus on it.
-          active: false,
-          // Ensure it's pinned
-          pinned: true,
-          // Provide URL of the tab
-          url: u,
-          // The window to open the tabs in
-          windowId: windowID,
-        }),
-      TAB_EDIT_RETRY_OPTS,
-    );
-    // If Chrome opens a picture in picture, it'll create a tab in
-    // the parent window with auto-open setting enabled.
-    // Ideally this would use the window kind but we can't at the moment:
-    // https://crbug.com/438514981
-    if (tab.id !== undefined) {
-      if (tab.windowId !== windowID) {
-        await browser.tabs.remove(tab.id);
-        throw new Error(
-          `Tab opened in the wrong window. Expected: ${windowID}, Got: ${tab.windowId}`,
-        );
-      }
-      newTabIDs.add(tab.id);
-    }
-  }
-  return newTabIDs;
-}
-
-/**
- * Closes the pinned tabs in the window, except for `keepTabIDs` and any
- * tab playing sound.
- *
- * @param {number} windowID
- * @param {Set<number>} keepTabIDs
- */
-export async function closePinnedTabs(
-  windowID: number,
-  keepTabIDs: Set<number>,
-) {
-  const tabs = await browser.tabs.query({
+  const existingPinnedTabs = await browser.tabs.query({
     pinned: true,
     windowId: windowID,
   });
-  const tabsToClose: Array<number> = [];
-  for (let i = 0; i < tabs.length; i++) {
-    const t = tabs[i];
+  const pinsToSync = existingPinnedTabs.filter((t, i): t is TabWithID => {
     if (t.audible) {
       logger.debug(`Keeping tab ${i} because it's playing sound`);
-      continue;
+      return false;
     }
     if (!t.id) {
       logger.debug(`Skipping tab ${i} because it has no ID`);
-      continue;
+      return false;
     }
-    if (keepTabIDs.has(t.id)) {
-      continue;
+    return true;
+  });
+  const toReplace = pinsToSync.slice(0, urlsToPin.length);
+  const toRemove = pinsToSync.slice(urlsToPin.length);
+
+  logger.debug(`Tabs to replace and to remove`, { toReplace, toRemove });
+
+  for (const [i, u] of urlsToPin.entries()) {
+    if (i < toReplace.length) {
+      await replaceTab(toReplace[i].id, u);
+    } else {
+      await createTab(windowID, u);
     }
-    tabsToClose.push(t.id);
   }
-  logger.debug(`Removing tabs:`, tabsToClose);
+
+  if (toRemove.length > 0) {
+    logger.debug(`Removing tabs:`, toRemove);
+    await removeTabs(toRemove.map((t) => t.id));
+  }
+}
+
+async function replaceTab(tabID: number, url: string) {
   await retryWithBackoff(
-    () => browser.tabs.remove(tabsToClose),
+    () => browser.tabs.update(tabID, { url }),
+    TAB_EDIT_RETRY_OPTS,
+  );
+}
+
+async function createTab(windowID: number, url: string) {
+  await retryWithBackoff(
+    () =>
+      browser.tabs.create({
+        // Don't force focus on it.
+        active: false,
+        // Ensure it's pinned
+        pinned: true,
+        // Provide URL of the tab
+        url,
+        // The window to open the tabs in
+        windowId: windowID,
+      }),
+    TAB_EDIT_RETRY_OPTS,
+  );
+}
+
+async function removeTabs(tabIDs: Array<number>) {
+  await retryWithBackoff(
+    () => browser.tabs.remove(tabIDs),
     TAB_EDIT_RETRY_OPTS,
   );
 }
